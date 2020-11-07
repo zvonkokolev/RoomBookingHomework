@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Utils;
 
@@ -16,32 +17,23 @@ namespace RoomBooking.ImportConsole
         /// <returns></returns>
         public static async Task<IEnumerable<Booking>> ReadBookingsFromCsvAsync()
         {
-            string[][] matrix = await MyFile.ReadStringMatrixFromCsvAsync("bookings.csv", true);
-            List<Customer> customers = matrix
-                .Select(c => new Customer
-                {
-                    LastName    =   c[0],
-                    FirstName   =   c[1],
-                    Iban        =   c[2]
-                })
-                .ToList();
-            List<Room> rooms = matrix
-                .Select(r => new Room
-                {
-                    RoomNumber = r[3]
-                })
-                .ToList();
-            List<Booking> bookings = matrix
+            return (await MyFile.ReadStringMatrixFromCsvAsync("bookings.csv", true))
                 .Select(b => new Booking
                 {
-                    Customer = customers.Single(),
-                    Room = rooms.Single(),
+                    Customer = new Customer()
+                    {
+                        LastName = b[0],
+                        FirstName = b[1],
+                        Iban = b[2]
+                    },
+                    Room = new Room()
+                    {
+                        RoomNumber = b[3]
+                    },
                     From = b[4],
                     To = b[5]
                 })
                 .ToList();
-            return bookings;
         }
-
     }
 }
