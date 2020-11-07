@@ -91,7 +91,7 @@ namespace RoomBooking.Wpf.Common
     }
 
     /// <summary>
-    /// Fehlermeldungen für das Property zrückgeben
+    /// Fehlermeldungen für das Property zurückgeben
     /// </summary>
     /// <param name="propertyName"></param>
     /// <returns>Fehlermeldungen für das Property</returns>
