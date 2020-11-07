@@ -19,13 +19,26 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Content="Room" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding SelectedRoom}" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="120"/>
-        <UniformGrid Grid.Row="1" Rows="9"  Columns="3" >
-            
-        </UniformGrid>
-        <ListView Grid.Row="2" SelectedItem="{Binding SelectedCustomer}">
-            
+        <Label Grid.Row="0" Grid.Column="0" Content="Room" HorizontalAlignment="Left"
+               Margin="10,10,0,0" VerticalAlignment="Top"/>
+
+        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Rooms}"
+                 DisplayMemberPath="Rooms.RoomNumber" SelectedValuePath="RoomNumberText"
+                 SelectedValue="{Binding Path=Rooms}" HorizontalAlignment="Left"
+                  Margin="0,0,0,0" VerticalAlignment="Top">
+        </ComboBox>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="3" SelectedItem="{Binding SelectedCustomer}" ItemsSource="{Binding Customers}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="120" Header="Von" DisplayMemberBinding="{Binding Booking.From}">
+                    </GridViewColumn>
+                    <GridViewColumn Width="120" Header="Bis" DisplayMemberBinding="{Binding Booking.To}">
+                    </GridViewColumn>
+                    <GridViewColumn Width="150" Header="Benutzer" DisplayMemberBinding="{Binding SelectedCostumerName}">
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
         </ListView>
         <Button Content="Button" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
     </Grid>

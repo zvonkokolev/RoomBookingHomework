@@ -8,13 +8,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace RoomBooking.Wpf.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
         private ObservableCollection<Booking> _bookings;
+        private ObservableCollection<Room> _rooms;
+        private Room _selectedRoom;
+        private ObservableCollection<Customer> _customers;
+        private Customer _selectedCustomer;
+        private string _roomNumberText;
+        private string _selectedCustomerName;
 
         public ObservableCollection<Booking> Bookings 
         {
@@ -27,6 +35,75 @@ namespace RoomBooking.Wpf.ViewModels
             }
         }
 
+        public ObservableCollection<Room> Rooms
+        {
+            get { return _rooms; }
+            set
+            {
+                _rooms = value;
+                OnPropertyChanged(nameof(Rooms));
+                Validate();
+            }
+        }
+
+        public Room SelectedRoom 
+        {
+            get { return _selectedRoom; }
+            set
+            {
+                _selectedRoom = value;
+                RoomNumberText = _selectedRoom.RoomNumber;
+                OnPropertyChanged(nameof(SelectedRoom));
+                Validate();
+            } 
+        }
+
+        public string RoomNumberText
+        { 
+            get { return _roomNumberText; }
+            set
+            {
+                _roomNumberText = value;
+                OnPropertyChanged(nameof(RoomNumberText));
+                Validate();
+            }
+        }
+
+        public ObservableCollection<Customer> Customers
+        {
+            get { return _customers; }
+            set
+            {
+                _customers = value;
+                OnPropertyChanged(nameof(Customers));
+                Validate();
+            }
+        }
+
+        public Customer SelectedCustomer
+        {
+            get { return _selectedCustomer; }
+            set
+            {
+                _selectedCustomer = value;
+                SelectedCustomerName = _selectedCustomer.LastName
+                    + _selectedCustomer.FirstName;
+                OnPropertyChanged(nameof(SelectedCustomer));
+                Validate();
+            }
+        }
+
+        public string SelectedCustomerName
+        {
+            get { return _selectedCustomerName; }
+            set
+            {
+                _selectedCustomerName = value;
+                OnPropertyChanged(nameof(SelectedCustomerName));
+                Validate();
+            }
+        }
+
         public MainViewModel(IWindowController windowController) : base(windowController)
         {
             Validate();
@@ -35,11 +112,18 @@ namespace RoomBooking.Wpf.ViewModels
         private async Task LoadDataAsync()
         {
             using IUnitOfWork unitOfWork = new UnitOfWork();
-            var bookings = (await unitOfWork.Bookings
-                .GetAllAsync())
+            var bookings = (await unitOfWork.Bookings.GetAllBookingsWithRoomsAndCustomersAsync())
+                .ToList()
+                ;
+            var rooms = bookings.Select(r => r.Room).Distinct()
+                .ToList()
+                ;
+            var customers = bookings.Select(c => c.Customer)
                 .ToList()
                 ;
             Bookings = new ObservableCollection<Booking>(bookings);
+            Rooms = new ObservableCollection<Room>(rooms);
+            Customers = new ObservableCollection<Customer>(customers);
         }
 
         public static async Task<MainViewModel> CreateAsync(IWindowController windowController)

@@ -4,18 +4,19 @@ using System.Threading.Tasks;
 
 namespace RoomBooking.Core.Contracts
 {
-  public interface IBookingRepository
-  {
-    Task<IEnumerable<Booking>> GetAllAsync();
+    public interface IBookingRepository
+    {
+        Task<IEnumerable<Booking>> GetAllAsync();
 
-    Task AddRangeAsync(IEnumerable<Booking> bookings);
+        Task AddRangeAsync(IEnumerable<Booking> bookings);
 
-    Task<IEnumerable<Booking>> GetAllWithRoomsAsync(int id);
+        Task<IEnumerable<Booking>> GetAllWithRoomsAsync(int id);
 
-    Task<Booking> GetByIdAsync(int id);
+        Task<Booking> GetByIdAsync(int id);
 
-    void Delete(Booking booking);
+        void Delete(Booking booking);
 
-    Task<IEnumerable<Booking>> GetByRoomWithCustomerAsync(int roomId);
-  }
+        Task<IEnumerable<Booking>> GetByRoomWithCustomerAsync(int roomId);
+        Task<IEnumerable<Booking>> GetAllBookingsWithRoomsAndCustomersAsync();
+    }
 }

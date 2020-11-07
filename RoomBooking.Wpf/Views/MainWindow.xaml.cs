@@ -1,4 +1,6 @@
-﻿namespace RoomBooking.Wpf.Views
+﻿using RoomBooking.Wpf.ViewModels;
+
+namespace RoomBooking.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
