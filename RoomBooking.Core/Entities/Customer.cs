@@ -8,6 +8,7 @@ namespace RoomBooking.Core.Entities
         public string FirstName { get; set; }
 
         [Required]
+        [MinLength(2)]
         public string LastName { get; set; }
 
         public string Iban { get; set; }
