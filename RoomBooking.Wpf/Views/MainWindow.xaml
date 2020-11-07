@@ -7,8 +7,26 @@
         MinHeight="300" MinWidth="300"
         Title="RoomBooking">
 
-    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Room" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding SelectedRoom}" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="120"/>
+        <UniformGrid Grid.Row="1" Rows="9"  Columns="3" >
+            
+        </UniformGrid>
+        <ListView Grid.Row="2" SelectedItem="{Binding SelectedCustomer}">
+            
+        </ListView>
+        <Button Content="Button" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
+    </Grid>
 </controls:MetroWindow>
-
-
-
