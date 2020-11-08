@@ -13,7 +13,7 @@ namespace RoomBooking.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         readonly ApplicationDbContext _dbContext;
-
+        private DuplicateNameValidation _duplicateNameValidation;
         /// <summary>
         /// ConnectionString kommt aus den appsettings.json
         /// </summary>
@@ -23,6 +23,7 @@ namespace RoomBooking.Persistence
             Rooms = new RoomRepository(_dbContext);
             Customers = new CustomerRepository(_dbContext);
             Bookings = new BookingRepository(_dbContext);
+            _duplicateNameValidation = new DuplicateNameValidation(this);
         }
 
         public ICustomerRepository Customers { get; }
@@ -44,6 +45,8 @@ namespace RoomBooking.Persistence
         /// <param name="entity"></param>
         private async Task ValidateEntityAsync(object entity)
         {
+            Validator.ValidateObject(entity, new ValidationContext(entity), true);
+            ValidationResult result = null;
             if (entity is Booking booking)
             {
                 var bookingsForRoom = await _dbContext.Bookings.Include(b => b.Customer).Where(b => b.RoomId == booking.RoomId).ToArrayAsync();
@@ -69,8 +72,13 @@ namespace RoomBooking.Persistence
                 {
                     throw new ValidationException($"Der IBAN {customer.Iban} von {customer.LastName} {customer.FirstName} ", null, new List<string> { "IBAN" });
                 }
+                result = _duplicateNameValidation.GetValidationResult(customer, new ValidationContext(customer));
+                
+                if (result != null && result != ValidationResult.Success)
+                {
+                    throw new ValidationException(result, _duplicateNameValidation, entity);
+                }
             }
-
         }
 
         /// <summary>

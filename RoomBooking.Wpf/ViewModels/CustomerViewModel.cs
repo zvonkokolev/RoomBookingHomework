@@ -21,8 +21,11 @@ namespace RoomBooking.Wpf.ViewModels
         private string _firstName;
         private string _iban;
         private Customer _selectedCustomer; // Aktuell ausgewählter Kunden
+        private Customer _tempCustomer;
         private ObservableCollection<Customer> _customers;
         private ICommand _cmdEditCostumer;
+        private ICommand _cmdUndo;
+        private ICommand _cmdSave;
 
         [Required]
         [MinLength(2)]
@@ -84,6 +87,7 @@ namespace RoomBooking.Wpf.ViewModels
         public CustomerViewModel(IWindowController controller, Customer customer) : base(controller)
         {
             _selectedCustomer = customer;
+            _tempCustomer = customer;
             LoadData();
         }
 
@@ -107,6 +111,57 @@ namespace RoomBooking.Wpf.ViewModels
         }
 
         // commands
+
+        public ICommand CmdUndo
+        {
+            get
+            {
+                if (_cmdUndo == null)
+                {
+                    _cmdUndo = new RelayCommand(
+                        execute: _ =>
+                        {
+                            //using IUnitOfWork uow = new UnitOfWork();
+                            _lastName = _tempCustomer.LastName;
+                            _firstName = _tempCustomer.FirstName;
+                            _iban = _tempCustomer.Iban;
+                            //uow.Customers.Update(_selectedCustomer);
+                            //uow.SaveAsync();
+
+                            LoadData();
+                        },
+                        canExecute: _ => _selectedCustomer != null);
+                }
+                return _cmdUndo;
+            }
+            set { _cmdUndo = value; }
+        }
+
+        public ICommand CmdSave
+        {
+            get
+            {
+                if (_cmdSave == null)
+                {
+                    _cmdSave = new RelayCommand(
+                        execute: _ =>
+                        {
+                            //using IUnitOfWork uow = new UnitOfWork();
+                            //_selectedCustomer.LastName = _lastName;
+                            //_selectedCustomer.FirstName = _firstName;
+                            //_selectedCustomer.Iban = _iban;
+                            //uow.Customers.Update(_selectedCustomer);
+                            //uow.SaveAsync();
+
+                            //LoadData();
+                        },
+                        canExecute: _ => _selectedCustomer != null);
+                }
+                return _cmdSave;
+            }
+            set { _cmdSave = value; }
+        }
+
         public ICommand CmdEditCostumer
         {
             get

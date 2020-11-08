@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 
 namespace RoomBooking.Persistence
 {
-  public class CustomerRepository : ICustomerRepository
-  {
-    private readonly ApplicationDbContext _dbContext;
-
-    public CustomerRepository(ApplicationDbContext dbContext)
+    public class CustomerRepository : ICustomerRepository
     {
-      _dbContext = dbContext;
-    }
+        private readonly ApplicationDbContext _dbContext;
+
+        public CustomerRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public bool CheckIfDuplicateName(string lastName, int id)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public object GetAll()
       => _dbContext.Customers
@@ -26,14 +31,14 @@ namespace RoomBooking.Persistence
           .OrderBy(customers => customers.LastName)
           .ToListAsync();
 
-    public async Task<IEnumerable<Customer>> GetAllWithBookingsAndRoomsAsync()
-      => await _dbContext.Customers
-          .Include("Bookings.Room")
-          .OrderBy(customers => customers.LastName)
-          .ToListAsync();
+        public async Task<IEnumerable<Customer>> GetAllWithBookingsAndRoomsAsync()
+          => await _dbContext.Customers
+              .Include("Bookings.Room")
+              .OrderBy(customers => customers.LastName)
+              .ToListAsync();
 
-    public async Task<Customer> GetByIdAsync(int id)
-      => await _dbContext.Customers.FindAsync(id);
+        public async Task<Customer> GetByIdAsync(int id)
+          => await _dbContext.Customers.FindAsync(id);
 
         public void Update(Customer selectedCustomer)
             => _dbContext.Customers.Update(selectedCustomer);
