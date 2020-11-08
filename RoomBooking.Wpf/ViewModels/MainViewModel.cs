@@ -26,6 +26,7 @@ namespace RoomBooking.Wpf.ViewModels
         private Customer _selectedCustomer;
 
         private static IEnumerable<Booking> _allBookings;
+        private ICommand _cmdEditCustomer;
 
         public ObservableCollection<Booking> Bookings 
         {
@@ -132,6 +133,27 @@ namespace RoomBooking.Wpf.ViewModels
         }
 
         // commands
-
+        public ICommand CmdEditCustomer
+        {
+            get
+            {
+                if(_cmdEditCustomer == null)
+                {
+                    _cmdEditCustomer = new RelayCommand(
+                        execute: _ => 
+                        {
+                            var window = new CustomerViewModel(Controller, SelectedBooking.Customer);
+                            window.Controller.ShowWindow(window, true);
+                            
+                        },
+                        canExecute: _ => SelectedBooking != null);
+                }
+                return _cmdEditCustomer;
+            }
+            set
+            {
+                _cmdEditCustomer = value;
+            }
+        }
     }
 }

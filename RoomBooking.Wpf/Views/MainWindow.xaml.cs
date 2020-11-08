@@ -1,6 +1,7 @@
 ﻿using RoomBooking.Core.Contracts;
 using RoomBooking.Core.Entities;
 using RoomBooking.Persistence;
+using RoomBooking.Wpf.Common;
 using RoomBooking.Wpf.ViewModels;
 using System.Windows.Controls;
 
@@ -20,8 +21,10 @@ namespace RoomBooking.Wpf.Views
         {
             Button button = e.Source as Button;
             Customer sourceCustomer = (Customer)button.CommandParameter;
+            WindowController windowController = new WindowController();
+            CustomerViewModel customerViewModel = new CustomerViewModel(windowController, sourceCustomer);
 
-            EditCustomerWindow editCustomerWindow = new EditCustomerWindow(sourceCustomer);
+            EditCustomerWindow editCustomerWindow = new EditCustomerWindow();
             editCustomerWindow.ShowDialog();
         }
 

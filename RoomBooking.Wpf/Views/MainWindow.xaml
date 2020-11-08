@@ -48,12 +48,13 @@
         </ListView>
         
         <Button x:Name="btn_edit"
-                Content="{Binding SelectedBooking.Customer.FullName}"
+                Content="{Binding Path=SelectedBooking.Customer.FullName}"
                 HorizontalAlignment="Stretch"
                 Grid.Row="3" VerticalAlignment="Stretch"
                 Grid.ColumnSpan="3"
-                Click="OnClick_EditCustomerWindow"
-                Command="{Binding CmdEditCostumer}"
-                CommandParameter="{Binding SelectedBooking.Customer}"/>
+                Command="{Binding Path=CmdEditCustomer}"
+                CommandParameter="{Binding SelectedBooking.Customer}"
+                />
+                <!--="OnClick_EditCustomerWindow"-->
     </Grid>
 </controls:MetroWindow>

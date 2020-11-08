@@ -1,5 +1,4 @@
-﻿using RoomBooking.Wpf.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,10 +17,8 @@ namespace RoomBooking.Wpf.Views
     /// </summary>
     public partial class EditCustomerWindow
     {
-        public EditCustomerWindow(Core.Entities.Customer sourceCustomer)
+        public EditCustomerWindow()
         {
-            var ctrl = this.DataContext;
-            CustomerViewModel customerViewModel = new CustomerViewModel(null, sourceCustomer);
             InitializeComponent();
         }
     }
