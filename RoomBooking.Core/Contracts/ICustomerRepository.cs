@@ -12,5 +12,6 @@ namespace RoomBooking.Core.Contracts
 
         Task<Customer> GetByIdAsync(int id);
         void Update(Customer selectedCustomer);
+        object GetAll();
     }
 }

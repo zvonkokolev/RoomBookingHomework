@@ -81,9 +81,12 @@ namespace RoomBooking.Wpf.ViewModels
             }
         }
 
-        public CustomerViewModel(IWindowController controller) : base(controller)
+        public CustomerViewModel(IWindowController controller, Customer customer) : base(controller)
         {
+            _selectedCustomer = customer;
+            LoadData();
         }
+
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!IbanChecker.CheckIban(Iban))
@@ -92,19 +95,15 @@ namespace RoomBooking.Wpf.ViewModels
             }
         }
 
-        private async Task LoadDataAsync()
+        private void LoadData()
         {
             using IUnitOfWork uow = new UnitOfWork();
-            var customers = await uow.Customers.GetAllAsync();
+            var customers = uow.Customers.GetAll();
+            Customers = new ObservableCollection<Customer>((List<Customer>)customers);
 
-            Customers = new ObservableCollection<Customer>(customers);
-        }
-
-        public static async Task<CustomerViewModel> CreateAsync(IWindowController windowController)
-        {
-            var viewModel = new CustomerViewModel(windowController);
-            await viewModel.LoadDataAsync();
-            return viewModel;
+            LastName = _selectedCustomer.LastName;
+            FirstName = _selectedCustomer.FirstName;
+            Iban = _selectedCustomer.Iban;
         }
 
         // commands
@@ -124,7 +123,7 @@ namespace RoomBooking.Wpf.ViewModels
                             uow.Customers.Update(_selectedCustomer);
                             uow.SaveAsync();
 
-                            LoadDataAsync();
+                            LoadData();
                         },
                         canExecute: _ => _selectedCustomer != null);
                 }

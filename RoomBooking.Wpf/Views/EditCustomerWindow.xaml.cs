@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoomBooking.Wpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -15,10 +16,12 @@ namespace RoomBooking.Wpf.Views
     /// <summary>
     /// Interaktionslogik für EditCustomerWindow.xaml
     /// </summary>
-    public partial class EditCustomerWindow : Window
+    public partial class EditCustomerWindow
     {
-        public EditCustomerWindow()
+        public EditCustomerWindow(Core.Entities.Customer sourceCustomer)
         {
+            var ctrl = this.DataContext;
+            CustomerViewModel customerViewModel = new CustomerViewModel(null, sourceCustomer);
             InitializeComponent();
         }
     }

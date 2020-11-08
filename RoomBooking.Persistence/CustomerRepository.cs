@@ -16,7 +16,12 @@ namespace RoomBooking.Persistence
       _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Customer>> GetAllAsync()
+        public object GetAll()
+      => _dbContext.Customers
+          .OrderBy(customers => customers.LastName)
+          .ToList();
+
+        public async Task<IEnumerable<Customer>> GetAllAsync()
       => await _dbContext.Customers
           .OrderBy(customers => customers.LastName)
           .ToListAsync();

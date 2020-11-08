@@ -1,11 +1,17 @@
-﻿<Window x:Class="RoomBooking.Wpf.Views.EditCustomerWindow"
+﻿<controls:MetroWindow x:Class="RoomBooking.Wpf.Views.EditCustomerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RoomBooking.Wpf.Views"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:viewmodel="clr-namespace:RoomBooking.Wpf.ViewModels"
         mc:Ignorable="d"
-        Title="EditCustomerWindow" Height="450" Width="800">
+        Title="EditCustomerWindow" Height="250" Width="400">
+    <!--
+    <Window.Resources>
+        <viewmodel:CustomerViewModel x:Key="vm"/>
+    </Window.Resources>
+    -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,13 +25,13 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Nachname"></Label>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=LastName}"></TextBox>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=LastName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Label Grid.Row="1" Grid.Column="0" Content="Vorname"></Label>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=FirsName}"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=FirsName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Label Grid.Row="2" Grid.Column="0" Content="IBAN"></Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Iban}"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Iban, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Button x:Name="btn_undo" Content="UNDO" Grid.Row="4" Grid.Column="0" Margin="50,0,0,0"></Button>
         <Button x:Name="btn_save" Content="Speichern" Grid.Row="4" Grid.Column="1" Margin="50,0,0,0"></Button>
                    
     </Grid>
-</Window>
+</controls:MetroWindow>
