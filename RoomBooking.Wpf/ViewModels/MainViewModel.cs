@@ -18,13 +18,12 @@ namespace RoomBooking.Wpf.ViewModels
     {
         private ObservableCollection<Booking> _bookings;
         private ObservableCollection<Room> _rooms;
-        private Room _selectedRoom;
         private ObservableCollection<Customer> _customers;
+
+        private Booking _selectedBooking;
+        private Room _selectedRoom;
         private Customer _selectedCustomer;
-        private string _roomNumberText;
-        private string _selectedCustomerName;
-        private string _from;
-        private string _to;
+
 
         public ObservableCollection<Booking> Bookings 
         {
@@ -33,7 +32,6 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _bookings = value;
                 OnPropertyChanged(nameof(Bookings));
-                //Validate();
             }
         }
 
@@ -44,7 +42,6 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _rooms = value;
                 OnPropertyChanged(nameof(Rooms));
-                //Validate();
             }
         }
 
@@ -55,7 +52,16 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _customers = value;
                 OnPropertyChanged(nameof(Customers));
-                //Validate();
+            }
+        }
+
+        public Booking SelectedBooking
+        {
+            get { return _selectedBooking; }
+            set
+            {
+                _selectedBooking = value;
+                OnPropertyChanged(nameof(SelectedBooking));
             }
         }
 
@@ -65,43 +71,8 @@ namespace RoomBooking.Wpf.ViewModels
             set
             {
                 _selectedRoom = value;
-                RoomNumberText = _selectedRoom?.RoomNumber;
                 OnPropertyChanged(nameof(SelectedRoom));
-                //Validate();
             } 
-        }
-
-        public string RoomNumberText
-        { 
-            get { return _roomNumberText; }
-            set
-            {
-                _roomNumberText = value;
-                OnPropertyChanged(nameof(RoomNumberText));
-                //Validate();
-            }
-        }
-
-        public string From
-        {
-            get { return _from; }
-            set
-            {
-                _from = value;
-                OnPropertyChanged(nameof(From));
-                //Validate();
-            }
-        }
-
-        public string To
-        {
-            get { return _to; }
-            set
-            {
-                _to = value;
-                OnPropertyChanged(nameof(To));
-                //Validate();
-            }
         }
 
         public Customer SelectedCustomer
@@ -110,21 +81,7 @@ namespace RoomBooking.Wpf.ViewModels
             set
             {
                 _selectedCustomer = value;
-                SelectedCustomerName = _selectedCustomer.LastName
-                    + " " + _selectedCustomer.FirstName;
                 OnPropertyChanged(nameof(SelectedCustomer));
-                //Validate();
-            }
-        }
-
-        public string SelectedCustomerName
-        {
-            get { return _selectedCustomerName; }
-            set
-            {
-                _selectedCustomerName = value;
-                OnPropertyChanged(nameof(SelectedCustomerName));
-                //Validate();
             }
         }
 
@@ -136,17 +93,15 @@ namespace RoomBooking.Wpf.ViewModels
         private async Task LoadDataAsync()
         {
             using IUnitOfWork unitOfWork = new UnitOfWork();
-            var bookings = (await unitOfWork.Bookings.GetAllBookingsWithRoomsAndCustomersAsync())
-                .ToList()
+            var bookings = await unitOfWork.Bookings.GetAllBookingsWithRoomsAndCustomersAsync()
                 ;
-            var rooms = (await unitOfWork.Rooms.GetAllAsync())
-                .ToList()
+            var rooms = await unitOfWork.Rooms.GetAllAsync()
                 ;
-            var customers = (await unitOfWork.Customers.GetAllWithBookingsAndRoomsAsync())
-                .ToList()
+            var customers = await unitOfWork.Customers.GetAllWithBookingsAndRoomsAsync()
                 ;
             Bookings = new ObservableCollection<Booking>(bookings);
             Rooms = new ObservableCollection<Room>(rooms);
+            SelectedRoom = Rooms.FirstOrDefault();
             Customers = new ObservableCollection<Customer>(customers);
         }
 
