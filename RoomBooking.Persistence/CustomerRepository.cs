@@ -30,5 +30,7 @@ namespace RoomBooking.Persistence
     public async Task<Customer> GetByIdAsync(int id)
       => await _dbContext.Customers.FindAsync(id);
 
-  }
+        public void Update(Customer selectedCustomer)
+            => _dbContext.Customers.Update(selectedCustomer);
+    }
 }

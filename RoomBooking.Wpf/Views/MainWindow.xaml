@@ -19,29 +19,35 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-        <StackPanel>
-            <Label Grid.Row="0" Grid.Column="0" Content="Room" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Label Content="Room" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <ComboBox ItemsSource="{Binding Path=Rooms}"
                   DisplayMemberPath="RoomNumber"
-                  SelectedItem="{Binding Path=SelectedRoom}">
+                  SelectedItem="{Binding Path=SelectedRoom}"
+                  HorizontalAlignment="Right" VerticalAlignment="Top">
             </ComboBox>
         </StackPanel>
 
         <ListView Grid.Row="2" Grid.ColumnSpan="3"
-                  ItemsSource="{Binding Bookings}"
+                  ItemsSource="{Binding Path=Bookings}"
                   SelectedItem="{Binding SelectedBooking}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="120" Header="Von" DisplayMemberBinding="{Binding Path=From}">
+                    <GridViewColumn Width="120" Header="Von" DisplayMemberBinding="{Binding From}">
                     </GridViewColumn>
-                    <GridViewColumn Width="120" Header="Bis" DisplayMemberBinding="{Binding Path=To}">
+                    <GridViewColumn Width="120" Header="Bis" DisplayMemberBinding="{Binding To}">
                     </GridViewColumn>
-                    <GridViewColumn Width="150" Header="Benutzer" DisplayMemberBinding="{Binding Path=Customer.FullName}">
+                    <GridViewColumn Width="150" Header="Benutzer" DisplayMemberBinding="{Binding Customer.FullName}">
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="{Binding SelectedBooking.Customer.FullName}" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Click="OnClick_EditCustomerWindow"/>
+        
+        <Button Content="{Binding SelectedBooking.Customer.FullName}"
+                HorizontalAlignment="Stretch"
+                Grid.Row="3" VerticalAlignment="Stretch"
+                Grid.ColumnSpan="3" Click="OnClick_EditCustomerWindow"
+                Command="{Binding CmdEditCostumer}"/>
     </Grid>
 </controls:MetroWindow>

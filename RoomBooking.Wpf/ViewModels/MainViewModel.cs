@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace RoomBooking.Wpf.ViewModels
@@ -24,6 +25,7 @@ namespace RoomBooking.Wpf.ViewModels
         private Room _selectedRoom;
         private Customer _selectedCustomer;
 
+        private static IEnumerable<Booking> _allBookings;
 
         public ObservableCollection<Booking> Bookings 
         {
@@ -72,6 +74,7 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _selectedRoom = value;
                 OnPropertyChanged(nameof(SelectedRoom));
+                OnChangedSelectedRoom_LoadChangedBookingData(_selectedRoom.Id);
             } 
         }
 
@@ -99,9 +102,11 @@ namespace RoomBooking.Wpf.ViewModels
                 ;
             var customers = await unitOfWork.Customers.GetAllWithBookingsAndRoomsAsync()
                 ;
-            Bookings = new ObservableCollection<Booking>(bookings);
+            _allBookings = bookings;
             Rooms = new ObservableCollection<Room>(rooms);
             SelectedRoom = Rooms.FirstOrDefault();
+            var bookingsForRoom = bookings.Where(r => r.RoomId == SelectedRoom.Id).ToList();
+            Bookings = new ObservableCollection<Booking>(bookingsForRoom);
             Customers = new ObservableCollection<Customer>(customers);
         }
 
@@ -119,5 +124,14 @@ namespace RoomBooking.Wpf.ViewModels
                 yield return new ValidationResult($"Datenbank ist fehlerhaft", new string[] { nameof(Bookings) });
             }
         }
+
+        private void OnChangedSelectedRoom_LoadChangedBookingData(int newSelectedRoomId)
+        {
+            var bookingsForRoom = _allBookings.Where(r => r.RoomId == newSelectedRoomId).ToList();
+            Bookings = new ObservableCollection<Booking>(bookingsForRoom);
+        }
+
+        // commands
+
     }
 }

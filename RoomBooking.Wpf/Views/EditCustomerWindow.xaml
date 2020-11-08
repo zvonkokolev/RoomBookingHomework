@@ -19,11 +19,11 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Nachname"></Label>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=LastName}"></TextBlock>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=LastName}"></TextBox>
         <Label Grid.Row="1" Grid.Column="0" Content="Vorname"></Label>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=FirsName}"></TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=FirsName}"></TextBox>
         <Label Grid.Row="2" Grid.Column="0" Content="IBAN"></Label>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Iban}"></TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Iban}"></TextBox>
         <Button x:Name="btn_undo" Content="UNDO" Grid.Row="4" Grid.Column="0" Margin="50,0,0,0"></Button>
         <Button x:Name="btn_save" Content="Speichern" Grid.Row="4" Grid.Column="1" Margin="50,0,0,0"></Button>
                    
