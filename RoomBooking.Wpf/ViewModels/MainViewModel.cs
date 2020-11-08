@@ -3,15 +3,12 @@ using RoomBooking.Core.Entities;
 using RoomBooking.Persistence;
 using RoomBooking.Wpf.Common;
 using RoomBooking.Wpf.Common.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace RoomBooking.Wpf.ViewModels
 {
@@ -143,8 +140,7 @@ namespace RoomBooking.Wpf.ViewModels
                         execute: _ => 
                         {
                             var window = new CustomerViewModel(Controller, SelectedBooking.Customer);
-                            window.Controller.ShowWindow(window, true);
-                            
+                            window.Controller.ShowWindow(window, true);                
                         },
                         canExecute: _ => SelectedBooking != null);
                 }

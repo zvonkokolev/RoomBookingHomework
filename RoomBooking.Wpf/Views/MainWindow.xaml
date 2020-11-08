@@ -53,8 +53,8 @@
                 Grid.Row="3" VerticalAlignment="Stretch"
                 Grid.ColumnSpan="3"
                 Command="{Binding Path=CmdEditCustomer}"
-                CommandParameter="{Binding SelectedBooking.Customer}"
                 />
-                <!--="OnClick_EditCustomerWindow"-->
+        <!--"OnClick_EditCustomerWindow"-->
+        <!--CommandParameter="{Binding SelectedBooking.Customer}"-->
     </Grid>
 </controls:MetroWindow>
