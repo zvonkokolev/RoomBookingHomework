@@ -11,5 +11,11 @@ namespace RoomBooking.Wpf.Views
         {
             InitializeComponent();
         }
+
+        private void OnClick_EditCustomerWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            EditCustomerWindow editCustomerWindow = new EditCustomerWindow();
+            editCustomerWindow.ShowDialog();
+        }
     }
 }

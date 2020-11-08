@@ -23,6 +23,8 @@ namespace RoomBooking.Wpf.ViewModels
         private Customer _selectedCustomer;
         private string _roomNumberText;
         private string _selectedCustomerName;
+        private string _from;
+        private string _to;
 
         public ObservableCollection<Booking> Bookings 
         {
@@ -31,7 +33,7 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _bookings = value;
                 OnPropertyChanged(nameof(Bookings));
-                Validate();
+                //Validate();
             }
         }
 
@@ -42,30 +44,7 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _rooms = value;
                 OnPropertyChanged(nameof(Rooms));
-                Validate();
-            }
-        }
-
-        public Room SelectedRoom 
-        {
-            get { return _selectedRoom; }
-            set
-            {
-                _selectedRoom = value;
-                RoomNumberText = _selectedRoom.RoomNumber;
-                OnPropertyChanged(nameof(SelectedRoom));
-                Validate();
-            } 
-        }
-
-        public string RoomNumberText
-        { 
-            get { return _roomNumberText; }
-            set
-            {
-                _roomNumberText = value;
-                OnPropertyChanged(nameof(RoomNumberText));
-                Validate();
+                //Validate();
             }
         }
 
@@ -76,7 +55,52 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _customers = value;
                 OnPropertyChanged(nameof(Customers));
-                Validate();
+                //Validate();
+            }
+        }
+
+        public Room SelectedRoom 
+        {
+            get { return _selectedRoom; }
+            set
+            {
+                _selectedRoom = value;
+                RoomNumberText = _selectedRoom?.RoomNumber;
+                OnPropertyChanged(nameof(SelectedRoom));
+                //Validate();
+            } 
+        }
+
+        public string RoomNumberText
+        { 
+            get { return _roomNumberText; }
+            set
+            {
+                _roomNumberText = value;
+                OnPropertyChanged(nameof(RoomNumberText));
+                //Validate();
+            }
+        }
+
+        public string From
+        {
+            get { return _from; }
+            set
+            {
+                _from = value;
+                OnPropertyChanged(nameof(From));
+                //Validate();
+            }
+        }
+
+        public string To
+        {
+            get { return _to; }
+            set
+            {
+                _to = value;
+                OnPropertyChanged(nameof(To));
+                //Validate();
             }
         }
 
@@ -87,9 +111,9 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _selectedCustomer = value;
                 SelectedCustomerName = _selectedCustomer.LastName
-                    + _selectedCustomer.FirstName;
+                    + " " + _selectedCustomer.FirstName;
                 OnPropertyChanged(nameof(SelectedCustomer));
-                Validate();
+                //Validate();
             }
         }
 
@@ -100,7 +124,7 @@ namespace RoomBooking.Wpf.ViewModels
             {
                 _selectedCustomerName = value;
                 OnPropertyChanged(nameof(SelectedCustomerName));
-                Validate();
+                //Validate();
             }
         }
 
@@ -115,10 +139,10 @@ namespace RoomBooking.Wpf.ViewModels
             var bookings = (await unitOfWork.Bookings.GetAllBookingsWithRoomsAndCustomersAsync())
                 .ToList()
                 ;
-            var rooms = bookings.Select(r => r.Room).Distinct()
+            var rooms = (await unitOfWork.Rooms.GetAllAsync())
                 .ToList()
                 ;
-            var customers = bookings.Select(c => c.Customer)
+            var customers = (await unitOfWork.Customers.GetAllWithBookingsAndRoomsAsync())
                 .ToList()
                 ;
             Bookings = new ObservableCollection<Booking>(bookings);

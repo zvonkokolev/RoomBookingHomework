@@ -22,24 +22,29 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Room" HorizontalAlignment="Left"
                Margin="10,10,0,0" VerticalAlignment="Top"/>
 
-        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Rooms}"
-                 DisplayMemberPath="Rooms.RoomNumber" SelectedValuePath="RoomNumberText"
-                 SelectedValue="{Binding Path=Rooms}" HorizontalAlignment="Left"
-                  Margin="0,0,0,0" VerticalAlignment="Top">
+        <ComboBox x:Name="comboBox" Grid.Row="0" Grid.Column="1"
+                  ItemsSource="{Binding Path=Rooms}"
+                  DisplayMemberPath="{Binding Path=RoomNumberText}"
+                  SelectedItem="{Binding Path=SelectedRoom}"
+                  HorizontalAlignment="Left"
+                  Margin="0,0,0,0" VerticalAlignment="Top"
+                  IsSynchronizedWithCurrentItem="True">
         </ComboBox>
 
-        <ListView Grid.Row="2" Grid.ColumnSpan="3" SelectedItem="{Binding SelectedCustomer}" ItemsSource="{Binding Customers}">
+        <ListView Grid.Row="2" Grid.ColumnSpan="3"
+                  ItemsSource="{Binding Path=Customers}"
+                  SelectedItem="{Binding Path=SelectedCustomerName}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="120" Header="Von" DisplayMemberBinding="{Binding Booking.From}">
+                    <GridViewColumn Width="120" Header="Von" DisplayMemberBinding="{Binding Path=From}">
                     </GridViewColumn>
-                    <GridViewColumn Width="120" Header="Bis" DisplayMemberBinding="{Binding Booking.To}">
+                    <GridViewColumn Width="120" Header="Bis" DisplayMemberBinding="{Binding Path=To}">
                     </GridViewColumn>
-                    <GridViewColumn Width="150" Header="Benutzer" DisplayMemberBinding="{Binding SelectedCostumerName}">
+                    <GridViewColumn Width="150" Header="Benutzer" DisplayMemberBinding="{Binding Path=SelectedCostumerName}">
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Button" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
+        <Button Content="{Binding Path=SelectedCustomer}" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Click="OnClick_EditCustomerWindow"/>
     </Grid>
 </controls:MetroWindow>
