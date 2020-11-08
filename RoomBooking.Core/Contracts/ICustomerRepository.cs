@@ -14,5 +14,6 @@ namespace RoomBooking.Core.Contracts
         void Update(Customer selectedCustomer);
         object GetAll();
         bool CheckIfDuplicateName(string lastName, int id);
+        Task AddAsync(Customer customer);
     }
 }

@@ -29,7 +29,7 @@ namespace RoomBooking.Wpf.ViewModels
 
         [Required]
         [MinLength(2)]
-        public string LastName 
+        public string LastName
         {
             get { return _lastName; }
             set
@@ -37,7 +37,7 @@ namespace RoomBooking.Wpf.ViewModels
                 _lastName = value;
                 OnPropertyChanged(nameof(LastName));
                 Validate();
-            } 
+            }
         }
         public string FirstName
         {
@@ -49,7 +49,7 @@ namespace RoomBooking.Wpf.ViewModels
                 Validate();
             }
         }
-        public string Name 
+        public string Name
         {
             get { return LastName + FirstName; }
         }
@@ -121,12 +121,9 @@ namespace RoomBooking.Wpf.ViewModels
                     _cmdUndo = new RelayCommand(
                         execute: _ =>
                         {
-                            //using IUnitOfWork uow = new UnitOfWork();
                             _lastName = _tempCustomer.LastName;
                             _firstName = _tempCustomer.FirstName;
                             _iban = _tempCustomer.Iban;
-                            //uow.Customers.Update(_selectedCustomer);
-                            //uow.SaveAsync();
 
                             LoadData();
                         },
@@ -146,14 +143,24 @@ namespace RoomBooking.Wpf.ViewModels
                     _cmdSave = new RelayCommand(
                         execute: _ =>
                         {
-                            //using IUnitOfWork uow = new UnitOfWork();
-                            //_selectedCustomer.LastName = _lastName;
-                            //_selectedCustomer.FirstName = _firstName;
-                            //_selectedCustomer.Iban = _iban;
-                            //uow.Customers.Update(_selectedCustomer);
-                            //uow.SaveAsync();
+                            using IUnitOfWork uow = new UnitOfWork();
+                            Customer customer = new Customer
+                            {
+                                LastName = _lastName,
+                                FirstName = _firstName,
+                                Iban = _iban
+                            };
+                            uow.Customers.AddAsync(customer);
+                            try
+                            {
+                                uow.SaveAsync();
+                            }
+                            catch (ValidationException e)
+                            {
+                                DbError = e.ValidationResult.ToString();
+                            }
 
-                            //LoadData();
+                            LoadData();
                         },
                         canExecute: _ => _selectedCustomer != null);
                 }
@@ -176,7 +183,14 @@ namespace RoomBooking.Wpf.ViewModels
                             _selectedCustomer.FirstName = _firstName;
                             _selectedCustomer.Iban = _iban;
                             uow.Customers.Update(_selectedCustomer);
-                            uow.SaveAsync();
+                            try
+                            {
+                                uow.SaveAsync();
+                            }
+                            catch (ValidationException e)
+                            {
+                                DbError = e.ValidationResult.ToString();
+                            }
 
                             LoadData();
                         },

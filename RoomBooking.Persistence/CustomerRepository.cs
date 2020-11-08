@@ -16,20 +16,23 @@ namespace RoomBooking.Persistence
             _dbContext = dbContext;
         }
 
+        public async Task AddAsync(Customer customer)
+            => await _dbContext.AddAsync(customer);
+
         public bool CheckIfDuplicateName(string lastName, int id)
-        {
-            throw new System.NotImplementedException();
-        }
+            => _dbContext.Customers
+                .Where(u => u.LastName == lastName && u.Id != id)
+                .FirstOrDefault() != null;
 
         public object GetAll()
-      => _dbContext.Customers
-          .OrderBy(customers => customers.LastName)
-          .ToList();
+            => _dbContext.Customers
+              .OrderBy(customers => customers.LastName)
+              .ToList();
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
-      => await _dbContext.Customers
-          .OrderBy(customers => customers.LastName)
-          .ToListAsync();
+           => await _dbContext.Customers
+              .OrderBy(customers => customers.LastName)
+              .ToListAsync();
 
         public async Task<IEnumerable<Customer>> GetAllWithBookingsAndRoomsAsync()
           => await _dbContext.Customers
@@ -41,6 +44,6 @@ namespace RoomBooking.Persistence
           => await _dbContext.Customers.FindAsync(id);
 
         public void Update(Customer selectedCustomer)
-            => _dbContext.Customers.Update(selectedCustomer);
+          => _dbContext.Customers.Update(selectedCustomer);
     }
 }
